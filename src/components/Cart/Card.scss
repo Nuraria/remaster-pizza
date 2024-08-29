@@ -1,0 +1,111 @@
+.card{
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+text-align: center;
+width: 280px;
+
+    img{
+        padding-left: 15px;
+        padding-bottom: 15px;
+    }
+
+    .description{
+        margin-top: 15px;
+        width: 280px;
+        height: 85px;
+        border-radius: 10px;
+        background-color: #F3F3F3;
+
+        .option{
+            display: flex;
+            justify-content: space-between;
+            padding: 7px 7px 3px 7px;
+            text-align: center;
+            
+            span, .unact{
+                width: 130px;
+                height: 32px;
+                border-radius: 5px;
+                background-color: #ffffff;
+                box-shadow: 2px 2px 12px -2px #d6d3d3;
+                padding-top: 3.5px;
+            }
+
+            .unact{
+                background-color: #F3F3F3;
+                box-shadow: 2px 2px 12px -2px #d6d3d300;
+            }
+        }
+
+        .option2{
+            display: flex;
+            justify-content: space-between;
+            padding: 3px 7px 3px 7px;
+            text-align: center;
+
+            span, .unact{
+                width: 82px;
+                height: 32px;
+                border-radius: 5px;
+                background-color: #ffffff;
+                box-shadow: 2px 2px 12px -2px #d6d3d3;
+                padding-top: 3.5px;
+            }
+
+            .unact{
+                background-color: #F3F3F3;
+                box-shadow: 2px 2px 12px -2px #d6d3d300;
+            }
+        }
+    }
+
+    .bottom_pannel{
+        display: flex;
+        width: 280px;
+        margin-top: 20px;
+        justify-content: space-between;
+
+        .cena{
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .active_button{
+            cursor: pointer;
+            width: 155px;
+            height: 40px;
+            border-radius: 50px;
+            background-color: var(--pizza-Color);
+            border: 1px solid var(--pizza-Color);
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .unactive_button{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            cursor: pointer;
+            width: 155px;
+            height: 40px;
+            border-radius: 50px;
+            background-color: #FFFFFF;
+            border: 1px solid var(--pizza-Color);
+            color: var(--pizza-Color);
+            font-size: 16px;
+
+            .circle{
+                width: 22px;
+                height: 22px;
+                background-color: var(--pizza-Color);
+                border-radius: 50%;
+                color: #FFFFFF;
+                padding-top: 2px;
+            }
+        }
+    }
+}
