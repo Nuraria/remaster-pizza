@@ -19,12 +19,14 @@ width: 280px;
         background-color: #F3F3F3;
 
         .option{
+            cursor: pointer;
             display: flex;
             justify-content: space-between;
             padding: 7px 7px 3px 7px;
             text-align: center;
             
             span, .unact{
+                cursor: pointer;
                 width: 130px;
                 height: 32px;
                 border-radius: 5px;
@@ -46,6 +48,7 @@ width: 280px;
             text-align: center;
 
             span, .unact{
+                cursor: pointer;
                 width: 82px;
                 height: 32px;
                 border-radius: 5px;

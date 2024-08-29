@@ -2,6 +2,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    position: relative;
 
     .filter_bubble_container{
         display: flex;
@@ -39,6 +40,7 @@
             color: #2C2C2C;
     
             span{
+                cursor: pointer;
                 font-weight: 400;
                 color: var(--pizza-Color);
                 border-bottom: 1px dashed var(--pizza-Color);

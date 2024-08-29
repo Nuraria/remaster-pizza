@@ -2,6 +2,8 @@ import React from "react";
 import "./Filter.scss";
 import ARROW from "../../assets/svg/Vector.svg";
 
+import PopUp from "../PopUp/PopUp";
+
 const Filter = () => {
   return (
     <>
@@ -20,6 +22,7 @@ const Filter = () => {
           <p>
             Сортировка по: <span>популярности</span>
           </p>
+          <PopUp />
         </div>
       </div>
       <h1>Все пиццы</h1>
