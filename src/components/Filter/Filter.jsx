@@ -4,8 +4,8 @@ import ARROW from "../../assets/svg/Vector.svg";
 
 // import PopUp from "../PopUp/PopUp";
 
-const Filter = () => {
-  const [category, setCategory] = React.useState(0);
+const Filter = ({ categoryId, onClickCategory, sortType, onClickSort }) => {
+  // const [category, setCategory] = React.useState(0);
   const categories = [
     "Все",
     "Мясные",
@@ -15,11 +15,17 @@ const Filter = () => {
     "Закрытые",
   ];
   const [open, setOpen] = React.useState(false);
-  console.log(open);
-  const sort = ["популярности", "по цене", "по алфавиту"];
-  const [sortCategory, setSortCategory] = React.useState(0);
+  const sort = [
+    { namee: "популярности(desc)", sortProperty: "rating" },
+    { namee: "популярности(asc)", sortProperty: "-rating" },
+    { namee: "по цене(desc)", sortProperty: "price" },
+    { namee: "по цене(asc)", sortProperty: "-price" },
+    { namee: "по алфавиту(desc)", sortProperty: "title" },
+    { namee: "по алфавиту(asc)", sortProperty: "-title" },
+  ];
+  // const [sortCategory, setSortCategory] = React.useState(0);
   const closePopUp = (index) => {
-    setSortCategory(index);
+    onClickSort(index);
     setOpen(false);
   };
 
@@ -30,9 +36,9 @@ const Filter = () => {
           {categories.map((name, index) => (
             <div
               key={index}
-              onClick={() => setCategory(index)}
+              onClick={() => onClickCategory(index)}
               className={
-                category === index ? "filter_bubble_active" : "filter_bubble"
+                categoryId === index ? "filter_bubble_active" : "filter_bubble"
               }
             >
               {name}
@@ -51,17 +57,17 @@ const Filter = () => {
           <img src={ARROW} alt="arrow" />
           <p>
             Сортировка по:
-            <span onClick={() => setOpen(!open)}> {sort[sortCategory]}</span>
+            <span onClick={() => setOpen(!open)}> {sortType.namee}</span>
           </p>
           {open && (
             <div className="PopUp">
-              {sort.map((sortItem, index) => (
+              {sort.map((obj, index) => (
                 <span
-                  onClick={() => closePopUp(index)}
-                  className={sortCategory === index ? "active" : ""}
+                  onClick={() => closePopUp(obj)}
+                  className={sortType.sortProperty === obj.sortProperty ? "active" : ""}
                   key={index}
                 >
-                  {sortItem}
+                  {obj.namee}
                 </span>
               ))}
             </div>
