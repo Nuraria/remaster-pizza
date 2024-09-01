@@ -11,12 +11,15 @@ const Home = () => {
     sortProperty: "rating",
   });
   const [pizzas, setPizzas] = React.useState([]);
+
+  const sortBy = sortType.sortProperty.replace("-", "");
+  const order = sortType.sortProperty.includes("-") ? "asc" : "desc";
+  const categoryBy = categoryId > 0 ? `category=${categoryId}` : "";
+  
   React.useEffect(() => {
     setIsLoading(true);
     fetch(
-      `https://662be852de35f91de159e148.mockapi.io/pizzas?${
-        categoryId > 0 ? `category=${categoryId}` : ""
-      }&sortBy=${sortType.sortProperty}&order=desc`
+      `https://662be852de35f91de159e148.mockapi.io/pizzas?${categoryBy}&sortBy=${sortBy}&order=${order}`
     )
       .then((res) => {
         return res.json();
