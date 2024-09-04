@@ -5,20 +5,28 @@ import Home from "./components/pages/Home.jsx";
 import NoteFound from "./components/pages/NoteFounde/NoteFounde.jsx";
 import { Routes, Route } from "react-router-dom";
 
+export const AppContext = React.createContext();
 function App() {
   const [valueText, setValueText] = React.useState("");
 
   return (
     <div className="wrapper">
-      <div className="content">
-        <Header valueText={valueText} setValueText={setValueText} />
-        <div className="insaid">
-          <Routes>
-            <Route path="/" element={<Home valueText={valueText} setValueText={setValueText} />} />
-            <Route path="*" element={<NoteFound />} />
-          </Routes>
+      <AppContext.Provider value={{valueText, setValueText}}>
+        <div className="content">
+          <Header />
+          <div className="insaid">
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <Home />
+                }
+              />
+              <Route path="*" element={<NoteFound />} />
+            </Routes>
+          </div>
         </div>
-      </div>
+      </AppContext.Provider>
     </div>
   );
 }

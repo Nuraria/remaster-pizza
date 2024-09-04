@@ -4,8 +4,10 @@ import Filter from "../Filter/Filter.jsx";
 import Card from "../Cart/Card.jsx";
 import Pagination from "../Pagination/";
 import ReactPaginate from "react-paginate";
+import { AppContext } from "../../App.js";
 
-const Home = ({ valueText, setValueText }) => {
+const Home = () => {
+  const { valueText } = React.useContext(AppContext);
   //https://662be852de35f91de159e148.mockapi.io/
   const [categoryId, setCategoryId] = React.useState(0);
   const [sortType, setSortType] = React.useState({

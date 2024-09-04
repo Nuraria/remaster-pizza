@@ -2,8 +2,10 @@ import React from "react";
 import styles from "./Search.module.scss";
 import CROSS from "../../assets/svg/search/sross.svg";
 import SEARCH from "../../assets/svg/search/search.svg";
+import { AppContext } from "../../App";
 
-const Search = ({ valueText, setValueText }) => {
+const Search = () => {
+  const { valueText, setValueText } = React.useContext(AppContext);
 
   return (
     <div className={styles.root}>
@@ -14,12 +16,14 @@ const Search = ({ valueText, setValueText }) => {
         className={styles.input}
         placeholder="Поиск..."
       />
-      {
-        valueText && (
-           <img onClick={() => setValueText('')} className={styles.cross} src={CROSS} alt="cross" />
-        )
-      }
-     
+      {valueText && (
+        <img
+          onClick={() => setValueText("")}
+          className={styles.cross}
+          src={CROSS}
+          alt="cross"
+        />
+      )}
     </div>
   );
 };
