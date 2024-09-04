@@ -2,7 +2,8 @@ import React from "react";
 import "./Header.scss";
 import ICON from "../../assets/header/pizza_header.svg";
 import { Link } from "react-router-dom";
-const Header = () => {
+import Search from "../Search/Search";
+const Header = ({valueText, setValueText}) => {
   return (
     <header className="header">
       <Link to="/">
@@ -14,6 +15,7 @@ const Header = () => {
           </div>
         </div>
       </Link>
+      <Search valueText={valueText} setValueText={setValueText} />
       <div className="basket">
         <span>5</span>
         <span>|</span>

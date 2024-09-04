@@ -2,6 +2,7 @@
     box-sizing: border-box;
     margin: 0 ;
     text-decoration: none;
+    list-style: none;
     a{
       color: black;
     }
@@ -43,6 +44,7 @@ body {
           display: flex;
           flex-wrap: wrap;
           gap: 65px 32px;
+          margin-bottom: 65px;
         }
       }
     }
