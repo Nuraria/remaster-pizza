@@ -3,22 +3,32 @@ import Skeleton from "../Cart/Skeleton.jsx";
 import Filter from "../Filter/Filter.jsx";
 import Card from "../Cart/Card.jsx";
 import Pagination from "../Pagination/";
-import ReactPaginate from "react-paginate";
+// import ReactPaginate from "react-paginate";
 import { AppContext } from "../../App.js";
+import { useSelector, useDispatch } from "react-redux";
+import { setCategoryId } from "../redux/slices/filterSlice.js";
 
 const Home = () => {
+  // const [categoryId, setCategoryId] = React.useState(0);
+  // заменили обычный state на тот что создали в store
+  const categoryId = useSelector((state) => state.filter.categoryId);
+  const dispatch = useDispatch();
+  const onChangeCategory = (id) => {
+    dispatch(setCategoryId(id));
+  };
+  const sortType = useSelector((state) => state.filter.sort.sortProperty);
+
   const { valueText } = React.useContext(AppContext);
   //https://662be852de35f91de159e148.mockapi.io/
-  const [categoryId, setCategoryId] = React.useState(0);
-  const [sortType, setSortType] = React.useState({
-    namee: "популрности",
-    sortProperty: "rating",
-  });
+  // const [sortType, setSortType] = React.useState({
+  //   namee: "популрности",
+  //   sortProperty: "rating",
+  // });
   const [pizzas, setPizzas] = React.useState([]);
   const [currentPage, setCurrentPage] = React.useState(1);
 
-  const sortBy = sortType.sortProperty.replace("-", "");
-  const order = sortType.sortProperty.includes("-") ? "asc" : "desc";
+  const sortBy = sortType.replace("-", "");
+  const order = sortType.includes("-") ? "asc" : "desc";
   const categoryBy = categoryId > 0 ? `category=${categoryId}` : "";
   const search = valueText ? `&search=${valueText}` : "";
 
@@ -45,9 +55,7 @@ const Home = () => {
     <>
       <Filter
         categoryId={categoryId}
-        onClickCategory={(i) => setCategoryId(i)}
-        sortType={sortType}
-        onClickSort={(i) => setSortType(i)}
+        onClickCategory={(i) => onChangeCategory(i)}
       />
       <div className="card_content">
         {isLoading
@@ -71,7 +79,7 @@ const Home = () => {
                 />
               ))}
       </div>
-      <Pagination onChangePage={number => setCurrentPage(number)} />
+      <Pagination onChangePage={(number) => setCurrentPage(number)} />
     </>
   );
 };

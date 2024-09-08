@@ -2,10 +2,15 @@ import React from "react";
 import "./Filter.scss";
 import ARROW from "../../assets/svg/Vector.svg";
 
+import { useSelector, useDispatch } from "react-redux";
+import { setSort } from "../redux/slices/filterSlice";
+
 // import PopUp from "../PopUp/PopUp";
 
-const Filter = ({ categoryId, onClickCategory, sortType, onClickSort }) => {
+const Filter = ({ categoryId, onClickCategory }) => {
   // const [category, setCategory] = React.useState(0);
+  const dispatch= useDispatch();
+  const sortType = useSelector(state => state.filter.sort);
   const categories = [
     "Все",
     "Мясные",
@@ -25,7 +30,8 @@ const Filter = ({ categoryId, onClickCategory, sortType, onClickSort }) => {
   ];
   // const [sortCategory, setSortCategory] = React.useState(0);
   const closePopUp = (index) => {
-    onClickSort(index);
+    // onClickSort(index);
+    dispatch(setSort(index))
     setOpen(false);
   };
 
