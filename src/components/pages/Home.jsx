@@ -7,9 +7,16 @@ import Pagination from "../Pagination/";
 import axios from "axios";
 import { AppContext } from "../../App.js";
 import { useSelector, useDispatch } from "react-redux";
-import { setCategoryId, setCurrentPage } from "../redux/slices/filterSlice.js";
+import {
+  setCategoryId,
+  setCurrentPage,
+  setFilters,
+} from "../redux/slices/filterSlice.js";
+import qs from "qs";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate();
   // const [categoryId, setCategoryId] = React.useState(0);
   // заменили обычный state на тот что создали в store
   const categoryId = useSelector((state) => state.filter.categoryId);
@@ -18,7 +25,9 @@ const Home = () => {
     dispatch(setCategoryId(id));
   };
   const sortType = useSelector((state) => state.filter.sort.sortProperty);
-  const currentPage = useSelector(state => state.filter.currentPage)
+  const currentPage = useSelector((state) => state.filter.currentPage);
+  const isSearch = React.useRef(false);
+  const isMounted = React.useRef(false);
 
   const { valueText } = React.useContext(AppContext);
   //https://662be852de35f91de159e148.mockapi.io/
@@ -26,19 +35,53 @@ const Home = () => {
   //   namee: "популрности",
   //   sortProperty: "rating",
   // });
+  const sort = [
+    { namee: "популярности(desc)", sortProperty: "rating" },
+    { namee: "популярности(asc)", sortProperty: "-rating" },
+    { namee: "по цене(desc)", sortProperty: "price" },
+    { namee: "по цене(asc)", sortProperty: "-price" },
+    { namee: "по алфавиту(desc)", sortProperty: "title" },
+    { namee: "по алфавиту(asc)", sortProperty: "-title" },
+  ];
   const [pizzas, setPizzas] = React.useState([]);
+  React.useEffect(() => {
+    if (window.location.search) {
+      const params = qs.parse(window.location.search.substring(1));
+      const sortList = sort.find(
+        (obj) => obj.sortProperty === params.sortProperty
+      );
+      dispatch(
+        setFilters({
+          ...params,
+          sortList,
+        })
+      );
+      isSearch.current = true;
+    }
+  }, []);
   // const [currentPage, setCurrentPage] = React.useState(1);
   const onChangePage = (number) => {
     dispatch(setCurrentPage(number));
-  }
+  };
 
-  const sortBy = sortType.replace("-", "");
-  const order = sortType.includes("-") ? "asc" : "desc";
-  const categoryBy = categoryId > 0 ? `category=${categoryId}` : "";
-  const search = valueText ? `&search=${valueText}` : " ";
+  const fetchPizzas = () => {
+    setIsLoading(true);
+    const sortBy = sortType.replace("-", "");
+    const order = sortType.includes("-") ? "asc" : "desc";
+    const categoryBy = categoryId > 0 ? `category=${categoryId}` : "";
+    const search = valueText ? `&search=${valueText}` : " ";
+    axios
+      .get(
+        `https://662be852de35f91de159e148.mockapi.io/pizzas?page=${currentPage}&limit=4&${categoryBy}&sortBy=${sortBy}&order=${order}${search}`
+      )
+      .then((json) => {
+        setPizzas(json.data);
+        setIsLoading(false);
+      });
+  };
 
   React.useEffect(() => {
-    setIsLoading(true);
+    // setIsLoading(true);
     // fetch(
     //   `https://662be852de35f91de159e148.mockapi.io/pizzas?page=${currentPage}&limit=4&${categoryBy}&sortBy=${sortBy}&order=${order}${search}`
     // )
@@ -53,20 +96,39 @@ const Home = () => {
     //     //   setIsLoading(false);
     //     // }, 1500);
     //   });
-    axios
-      .get(
-        `https://662be852de35f91de159e148.mockapi.io/pizzas?page=${currentPage}&limit=4&${categoryBy}&sortBy=${sortBy}&order=${order}${search}`
-      )
-      .then((json) => {
-        setPizzas(json.data);
-        setIsLoading(false);
-      });
+
+    // axios
+    //   .get(
+    //     `https://662be852de35f91de159e148.mockapi.io/pizzas?page=${currentPage}&limit=4&${categoryBy}&sortBy=${sortBy}&order=${order}${search}`
+    //   )
+    //   .then((json) => {
+    //     setPizzas(json.data);
+    //     setIsLoading(false);
+    //   });
+
+    if (!isSearch.current) {
+      fetchPizzas();
+    }
+    isSearch.current = false;
   }, [categoryId, sortType, valueText, currentPage]);
   const [isLoading, setIsLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    if (isMounted.current) {
+      const queryString = qs.stringify({
+        sortType,
+        categoryId,
+        currentPage,
+      });
+      navigate(`?${queryString}`);
+    }
+    isMounted.current = true;
+  }, [categoryId, sortType, currentPage]);
 
   return (
     <>
       <Filter
+        sort={sort}
         categoryId={categoryId}
         onClickCategory={(i) => onChangeCategory(i)}
       />

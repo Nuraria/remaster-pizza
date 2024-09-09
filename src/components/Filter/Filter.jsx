@@ -7,7 +7,8 @@ import { setSort } from "../redux/slices/filterSlice";
 
 // import PopUp from "../PopUp/PopUp";
 
-const Filter = ({ categoryId, onClickCategory }) => {
+
+const Filter = ({ categoryId, onClickCategory, sort }) => {
   // const [category, setCategory] = React.useState(0);
   const dispatch= useDispatch();
   const sortType = useSelector(state => state.filter.sort);
@@ -20,14 +21,6 @@ const Filter = ({ categoryId, onClickCategory }) => {
     "Закрытые",
   ];
   const [open, setOpen] = React.useState(false);
-  const sort = [
-    { namee: "популярности(desc)", sortProperty: "rating" },
-    { namee: "популярности(asc)", sortProperty: "-rating" },
-    { namee: "по цене(desc)", sortProperty: "price" },
-    { namee: "по цене(asc)", sortProperty: "-price" },
-    { namee: "по алфавиту(desc)", sortProperty: "title" },
-    { namee: "по алфавиту(asc)", sortProperty: "-title" },
-  ];
   // const [sortCategory, setSortCategory] = React.useState(0);
   const closePopUp = (index) => {
     // onClickSort(index);
