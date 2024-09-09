@@ -4,9 +4,10 @@ import Filter from "../Filter/Filter.jsx";
 import Card from "../Cart/Card.jsx";
 import Pagination from "../Pagination/";
 // import ReactPaginate from "react-paginate";
+import axios from "axios";
 import { AppContext } from "../../App.js";
 import { useSelector, useDispatch } from "react-redux";
-import { setCategoryId } from "../redux/slices/filterSlice.js";
+import { setCategoryId, setCurrentPage } from "../redux/slices/filterSlice.js";
 
 const Home = () => {
   // const [categoryId, setCategoryId] = React.useState(0);
@@ -17,6 +18,7 @@ const Home = () => {
     dispatch(setCategoryId(id));
   };
   const sortType = useSelector((state) => state.filter.sort.sortProperty);
+  const currentPage = useSelector(state => state.filter.currentPage)
 
   const { valueText } = React.useContext(AppContext);
   //https://662be852de35f91de159e148.mockapi.io/
@@ -25,28 +27,39 @@ const Home = () => {
   //   sortProperty: "rating",
   // });
   const [pizzas, setPizzas] = React.useState([]);
-  const [currentPage, setCurrentPage] = React.useState(1);
+  // const [currentPage, setCurrentPage] = React.useState(1);
+  const onChangePage = (number) => {
+    dispatch(setCurrentPage(number));
+  }
 
   const sortBy = sortType.replace("-", "");
   const order = sortType.includes("-") ? "asc" : "desc";
   const categoryBy = categoryId > 0 ? `category=${categoryId}` : "";
-  const search = valueText ? `&search=${valueText}` : "";
+  const search = valueText ? `&search=${valueText}` : " ";
 
   React.useEffect(() => {
     setIsLoading(true);
-    fetch(
-      `https://662be852de35f91de159e148.mockapi.io/pizzas?page=${currentPage}&limit=4&${categoryBy}&sortBy=${sortBy}&order=${order}${search}`
-    )
-      .then((res) => {
-        return res.json();
-      })
+    // fetch(
+    //   `https://662be852de35f91de159e148.mockapi.io/pizzas?page=${currentPage}&limit=4&${categoryBy}&sortBy=${sortBy}&order=${order}${search}`
+    // )
+    //   .then((res) => {
+    //     return res.json();
+    //   })
+    //   .then((json) => {
+    //     setPizzas(json);
+    //     setIsLoading(false);
+    //     // setTimeout(() => {
+    //     //   setPizzas(json);
+    //     //   setIsLoading(false);
+    //     // }, 1500);
+    //   });
+    axios
+      .get(
+        `https://662be852de35f91de159e148.mockapi.io/pizzas?page=${currentPage}&limit=4&${categoryBy}&sortBy=${sortBy}&order=${order}${search}`
+      )
       .then((json) => {
-        setPizzas(json);
+        setPizzas(json.data);
         setIsLoading(false);
-        // setTimeout(() => {
-        //   setPizzas(json);
-        //   setIsLoading(false);
-        // }, 1500);
       });
   }, [categoryId, sortType, valueText, currentPage]);
   const [isLoading, setIsLoading] = React.useState(true);
@@ -79,7 +92,7 @@ const Home = () => {
                 />
               ))}
       </div>
-      <Pagination onChangePage={(number) => setCurrentPage(number)} />
+      <Pagination currentPage={currentPage} onChangePage={onChangePage} />
     </>
   );
 };

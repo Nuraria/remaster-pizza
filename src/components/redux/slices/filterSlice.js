@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 // создаём начальное значение нашего state в store которое будет по умолчанию отображаться
 const initialState = {
   categoryId: 0,
+  currentPage: 1,
   sort: {
     namee: "популрности",
     sortProperty: "rating",
@@ -17,10 +18,13 @@ export const filterSlice = createSlice({
     },
     setSort(state, action){
       state.sort = action.payload
+    },
+    setCurrentPage(state, action){
+      state.currentPage = action.payload;
     }
   },
 });
 // экспортируем наши action указывая откуда брать их
-export const { setCategoryId, setSort } = filterSlice.actions;
+export const { setCategoryId, setSort, setCurrentPage } = filterSlice.actions;
 // экспортируем reducer из slice(state)
 export default filterSlice.reducer;
